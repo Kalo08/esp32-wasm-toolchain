@@ -1,0 +1,1 @@
+ C:/Users/USER/AppData/Local/Arduino15/packages/esp32/tools/esp-x32/2601/bin/../lib/gcc/xtensa-esp-elf/14.2.0/../../../../xtensa-esp-elf/bin/as.exe --gdwarf-4 --traditional-format --longcalls --dynconfig=xtensa_esp32s3.so -o C:\work\ground-truth\_rerun\2_core_cpp_compile.o C:\Users\USER\AppData\Local\Temp\cc8TohFc.s

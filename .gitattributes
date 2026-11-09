@@ -1,0 +1,9 @@
+* text=auto
+*.docx binary
+*.png binary
+*.wasm binary
+*.bin binary
+*.sh text eol=lf
+*.py text eol=lf
+*.cjs text eol=lf
+*.mjs text eol=lf

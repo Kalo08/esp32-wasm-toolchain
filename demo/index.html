@@ -1,0 +1,9 @@
+<!doctype html><meta charset="utf-8"><title>cc1plus in the browser</title>
+<pre id="o">starting…</pre>
+<script>
+const o = document.getElementById('o'); window.__result = null;
+const w = new Worker('worker.js');
+w.onmessage = (e) => { const d = e.data; if (d.type === 'log') o.textContent += '\n' + d.m; else { window.__result = d; o.textContent += '\n' + JSON.stringify(d, null, 1); } };
+w.onerror = (e) => { window.__result = { type: 'error', m: e.message }; o.textContent += '\nERROR ' + e.message; };
+w.postMessage('go');
+</script>

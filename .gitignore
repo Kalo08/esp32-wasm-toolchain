@@ -1,0 +1,8 @@
+node_modules/
+# build outputs: the WebAssembly tools and SDK bundles are large; publish them as release assets, not in git
+dist/
+*.wasm
+sdk.bin
+headers.bin
+reference/*.elf
+.DS_Store
