@@ -15,20 +15,20 @@
 <text x="1104" y="528" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">10000 s</text>
 <text x="48" y="140" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">Assemble the sketch</text>
 <text x="48" y="162" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">as-new.wasm</text>
-<rect x="384" y="120" width="37" height="32" rx="2" ry="2" fill="#2B7A78" stroke="none"/>
-<text x="429" y="141" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="start">0.18 s</text>
+<rect x="384" y="120" width="37" height="32" rx="2" ry="2" fill="#4A6B5D" stroke="none"/>
+<text x="429" y="141" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#4A6B5D" text-anchor="start">0.18 s</text>
 <text x="48" y="220" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">Compile, only the 337 headers</text>
 <text x="48" y="242" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">cc1plus.wasm</text>
-<rect x="384" y="200" width="206" height="32" rx="2" ry="2" fill="#2B7A78" stroke="none"/>
-<text x="598" y="221" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="start">2.7 s</text>
+<rect x="384" y="200" width="206" height="32" rx="2" ry="2" fill="#4A6B5D" stroke="none"/>
+<text x="598" y="221" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#4A6B5D" text-anchor="start">2.7 s</text>
 <text x="48" y="300" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">Compile, headers on Ubuntu disk</text>
 <text x="48" y="322" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">cc1plus.wasm</text>
-<rect x="384" y="280" width="251" height="32" rx="2" ry="2" fill="#2B7A78" stroke="none"/>
-<text x="643" y="301" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="start">5.5 s</text>
+<rect x="384" y="280" width="251" height="32" rx="2" ry="2" fill="#4A6B5D" stroke="none"/>
+<text x="643" y="301" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#4A6B5D" text-anchor="start">5.5 s</text>
 <text x="48" y="380" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">Link the full firmware</text>
 <text x="48" y="402" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">ld-new.wasm, 883 arguments</text>
-<rect x="384" y="360" width="425" height="32" rx="2" ry="2" fill="#2B7A78" stroke="none"/>
-<text x="817" y="381" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="start">90 s</text>
+<rect x="384" y="360" width="425" height="32" rx="2" ry="2" fill="#4A6B5D" stroke="none"/>
+<text x="817" y="381" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#4A6B5D" text-anchor="start">90 s</text>
 <text x="48" y="460" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">Compile, headers on /mnt/c</text>
 <text x="48" y="482" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">stopped before it finished</text>
 <rect x="384" y="440" width="601" height="32" rx="2" ry="2" fill="#FFFFFF" stroke="#64748B" stroke-width="2" stroke-dasharray="6 6"/>

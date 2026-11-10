@@ -20,6 +20,8 @@ needs a few more steps, because they contain GPL code.
       [`SOURCE.md`](SOURCE.md).
 - [ ] [`SOURCE.md`](SOURCE.md) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) are included next to the binaries.
 - [ ] The licence texts are included: GPL-3.0, and the notices for GMP, MPFR, MPC and the Emscripten runtime.
+- [ ] **The headers bundle is redistributed material too.** `headers.bin` holds Arduino core headers (LGPL-2.1), ESP-IDF
+      headers (Apache-2.0) and the C and C++ library headers (newlib, libstdc++). Include their licence texts as well.
 
 **The SDK bundle**
 

@@ -4,12 +4,12 @@
 
 <br>
 
-![status: beta](https://img.shields.io/badge/status-beta-orange)
-![chip: ESP32-S3](https://img.shields.io/badge/chip-ESP32--S3-e7352c)
-![built as WebAssembly](https://img.shields.io/badge/toolchain-WebAssembly-654ff0)
-![browser: Chrome and Edge](https://img.shields.io/badge/browser-Chrome%20%7C%20Edge-4285f4)
-![code: MIT](https://img.shields.io/badge/code-MIT-blue)
-![toolchain binaries: GPL-3.0](https://img.shields.io/badge/toolchain%20binaries-GPL--3.0-lightgrey)
+![status: beta](https://img.shields.io/badge/status-beta-4A6B5D?style=flat-square&labelColor=1F2A44)
+![chip: ESP32-S3](https://img.shields.io/badge/chip-ESP32--S3-64748B?style=flat-square&labelColor=1F2A44)
+![built as WebAssembly](https://img.shields.io/badge/toolchain-WebAssembly-64748B?style=flat-square&labelColor=1F2A44)
+![browser: Chrome and Edge](https://img.shields.io/badge/browser-Chrome%20%7C%20Edge-64748B?style=flat-square&labelColor=1F2A44)
+![code: MIT](https://img.shields.io/badge/code-MIT-64748B?style=flat-square&labelColor=1F2A44)
+![toolchain binaries: GPL-3.0](https://img.shields.io/badge/toolchain%20binaries-GPL--3.0-64748B?style=flat-square&labelColor=1F2A44)
 
 **[How it works](#how-it-works) · [What's verified](#whats-verified) · [Use it](#use-it) · [WiFi and Bluetooth](#wifi-and-bluetooth) · [Build it](#build-the-toolchain) · [Docs](#documentation)**
 
@@ -58,7 +58,7 @@ flowchart LR
         C
         D
     end
-    style W fill:#fff4e6,stroke:#e69138
+    style W fill:#F1F5F9,stroke:#64748B,stroke-width:2px
 ```
 
 1. **Compile.** `cc1plus.wasm` turns C++ into assembly. The Arduino headers arrive as a static bundle.
@@ -71,18 +71,18 @@ flowchart LR
 Verified on one PC, with the SparkFun ESP32-S3 Thing Plus board definition and Arduino-ESP32 core 3.3.12. The test is bytes:
 if the WebAssembly tools give the same bytes as the native ones, they're right.
 
-| Stage | Result | |
+| Stage | Result | Status |
 |---|---|---|
-| Assemble (`as-new.wasm`) | **byte-for-byte identical** object file to the native assembler (after one Windows path was written with forward slashes) | ✅ |
-| Link (`ld-new.wasm`) | **byte-for-byte identical** 6,883,032-byte ELF to the native link, from 883 arguments and the full SDK | ✅ |
-| Link against a *thin* SDK | byte-for-byte identical ELF for 5 sample programs, using only the archive members they need | ✅ |
-| Compile (`cc1plus.wasm`) | the first 5,600 of 6,297 lines of assembly are identical to the native compiler's; the other 16 lines are debug-info strings (the compiler's flag list and the working-folder path) | ✅ |
-| `elf2image` | **byte-for-byte identical** to `esptool elf2image` for the blink ELF | ✅ |
-| Whole pipeline in a browser | blink: C++ → flashable image in about 13 s in a Chromium Worker. The image differs from the native one only in the embedded ELF hash (32 bytes), the checksum (1 byte) and the image digest (32 bytes), because the ELF's debug paths differ | ✅ |
-| **Flashing a real board and it running** | the last step (`src/flash.js` → Web Serial → the chip booting your program) is **untested in this repository** | ⚠️ |
-| Other browsers, phones, low-memory machines | untested (Safari and Firefox have no Web Serial) | ⚠️ |
-| Other S3 boards | need their own profile | ❌ |
-| WiFi, Bluetooth, other libraries | fail at the **link** step: the bundled libraries are cut down to what the sample programs use | ❌ |
+| Assemble (`as-new.wasm`) | **byte-for-byte identical** object file to the native assembler (after one Windows path was written with forward slashes) | Verified |
+| Link (`ld-new.wasm`) | **byte-for-byte identical** 6,883,032-byte ELF to the native link, from 883 arguments and the full SDK | Verified |
+| Link against a *thin* SDK | byte-for-byte identical ELF for 5 sample programs, using only the archive members they need | Verified |
+| Compile (`cc1plus.wasm`) | the first 5,600 of 6,297 lines of assembly are identical to the native compiler's; the other 16 lines are debug-info strings (the compiler's flag list and the working-folder path) | Verified |
+| `elf2image` | **byte-for-byte identical** to `esptool elf2image` for the blink ELF | Verified |
+| Whole pipeline in a browser | blink: C++ → flashable image in about 13 s in a Chromium Worker. The image differs from the native one only in the embedded ELF hash (32 bytes), the checksum (1 byte) and the image digest (32 bytes), because the ELF's debug paths differ | Verified |
+| **Flashing a real board and it running** | the last step (`src/flash.js` → Web Serial → the chip booting your program) is **untested in this repository** | Not tested |
+| Other browsers, phones, low-memory machines | untested (Safari and Firefox have no Web Serial) | Not tested |
+| Other S3 boards | need their own profile | Not supported |
+| WiFi, Bluetooth, other libraries | fail at the **link** step: the bundled libraries are cut down to what the sample programs use | Not supported |
 
 <p align="center"><img src="docs/figures/fig_pipeline.svg" alt="The four build stages, native and WebAssembly, with test results" width="720"></p>
 

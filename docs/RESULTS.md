@@ -15,11 +15,11 @@ Emscripten 7.0.0 from Espressif's own sources at the tags in [`../SOURCE.md`](..
 
 | | |
 |---|---|
-| Assembler, linker, image maker | ✅ byte-for-byte identical to the native tools |
-| C++ compiler | ✅ identical code and data; 16 debug-string lines differ |
-| Whole pipeline in a browser Worker | ✅ about 13 s for blink |
+| Assembler, linker, image maker | Verified: byte-for-byte identical to the native tools |
+| C++ compiler | Verified: identical code and data; 16 debug-string lines differ |
+| Whole pipeline in a browser Worker | Verified: about 13 s for blink |
 | Download | about 16 MB gzipped |
-| Flash and run on a real board | ⚠️ not yet tested |
+| Flash and run on a real board | Not yet tested |
 
 ## Test results (the blink sketch)
 

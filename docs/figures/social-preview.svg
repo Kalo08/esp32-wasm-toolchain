@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
 <rect width="1280" height="640" fill="#FFFFFF"/>
-<rect x="80" y="120" width="64" height="8" rx="0" ry="0" fill="#2B7A78" stroke="none"/>
+<rect x="80" y="120" width="64" height="8" rx="0" ry="0" fill="#4A6B5D" stroke="none"/>
 <text x="80" y="200" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="56" font-weight="600" fill="#1F2A44" text-anchor="start">esp32-wasm-toolchain</text>
 <text x="80" y="256" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="400" fill="#64748B" text-anchor="start">Compile Arduino C++ for the ESP32-S3 and flash it from a web page.</text>
 <text x="80" y="296" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="400" fill="#64748B" text-anchor="start">No server-side compiler. No desktop app. No Arduino IDE.</text>
@@ -10,24 +10,24 @@
 <text x="160" y="446" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">your code</text>
 <line x1="240" y1="408" x2="264" y2="408" stroke="#1F2A44" stroke-width="2" stroke-linecap="round"/>
 <polygon points="272,408 264,403 264,413" fill="#1F2A44"/>
-<rect x="272" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#2B7A78" stroke-width="2"/>
-<g transform="translate(340,372)" fill="none" stroke="#2B7A78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></g>
+<rect x="272" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#4A6B5D" stroke-width="2"/>
+<g transform="translate(340,372)" fill="none" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></g>
 <text x="352" y="424" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#1F2A44" text-anchor="middle">cc1plus</text>
 <text x="352" y="446" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">compile</text>
-<line x1="432" y1="408" x2="456" y2="408" stroke="#2B7A78" stroke-width="2" stroke-linecap="round"/>
-<polygon points="464,408 456,403 456,413" fill="#2B7A78"/>
-<rect x="464" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#2B7A78" stroke-width="2"/>
-<g transform="translate(532,372)" fill="none" stroke="#2B7A78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="12" y1="6" x2="12" y2="11"/></g>
+<line x1="432" y1="408" x2="456" y2="408" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round"/>
+<polygon points="464,408 456,403 456,413" fill="#4A6B5D"/>
+<rect x="464" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#4A6B5D" stroke-width="2"/>
+<g transform="translate(532,372)" fill="none" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><line x1="3" y1="11" x2="21" y2="11"/><line x1="12" y1="6" x2="12" y2="11"/></g>
 <text x="544" y="424" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#1F2A44" text-anchor="middle">as</text>
 <text x="544" y="446" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">assemble</text>
-<line x1="624" y1="408" x2="648" y2="408" stroke="#2B7A78" stroke-width="2" stroke-linecap="round"/>
-<polygon points="656,408 648,403 648,413" fill="#2B7A78"/>
-<rect x="656" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#2B7A78" stroke-width="2"/>
-<g transform="translate(724,372)" fill="none" stroke="#2B7A78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="12" height="8" rx="4"/><rect x="10" y="8" width="12" height="8" rx="4"/></g>
+<line x1="624" y1="408" x2="648" y2="408" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round"/>
+<polygon points="656,408 648,403 648,413" fill="#4A6B5D"/>
+<rect x="656" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#4A6B5D" stroke-width="2"/>
+<g transform="translate(724,372)" fill="none" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="12" height="8" rx="4"/><rect x="10" y="8" width="12" height="8" rx="4"/></g>
 <text x="736" y="424" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#1F2A44" text-anchor="middle">ld</text>
 <text x="736" y="446" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">link + SDK</text>
-<line x1="816" y1="408" x2="840" y2="408" stroke="#2B7A78" stroke-width="2" stroke-linecap="round"/>
-<polygon points="848,408 840,403 840,413" fill="#2B7A78"/>
+<line x1="816" y1="408" x2="840" y2="408" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round"/>
+<polygon points="848,408 840,403 840,413" fill="#4A6B5D"/>
 <rect x="848" y="352" width="160" height="112" rx="8" ry="8" fill="#FFFFFF" stroke="#1F2A44" stroke-width="2"/>
 <g transform="translate(916,372)" fill="none" stroke="#1F2A44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/></g>
 <text x="928" y="424" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#1F2A44" text-anchor="middle">elf2image</text>
@@ -38,8 +38,8 @@
 <g transform="translate(1108,372)" fill="none" stroke="#1F2A44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="9" width="10" height="7" rx="2"/><line x1="10" y1="4" x2="10" y2="9"/><line x1="14" y1="4" x2="14" y2="9"/><line x1="12" y1="16" x2="12" y2="21"/></g>
 <text x="1120" y="424" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#1F2A44" text-anchor="middle">Web Serial</text>
 <text x="1120" y="446" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">flash</text>
-<line x1="272" y1="496" x2="816" y2="496" stroke="#2B7A78" stroke-width="2" stroke-linecap="round"/>
-<line x1="272" y1="488" x2="272" y2="496" stroke="#2B7A78" stroke-width="2" stroke-linecap="round"/>
-<line x1="816" y1="488" x2="816" y2="496" stroke="#2B7A78" stroke-width="2" stroke-linecap="round"/>
-<text x="544" y="528" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#2B7A78" text-anchor="middle">Espressif GCC 14.2 and binutils 2.43, built as WebAssembly, in a Web Worker</text>
+<line x1="272" y1="496" x2="816" y2="496" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round"/>
+<line x1="272" y1="488" x2="272" y2="496" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round"/>
+<line x1="816" y1="488" x2="816" y2="496" stroke="#4A6B5D" stroke-width="2" stroke-linecap="round"/>
+<text x="544" y="528" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#4A6B5D" text-anchor="middle">Espressif GCC 14.2 and binutils 2.43, built as WebAssembly, in a Web Worker</text>
 </svg>
