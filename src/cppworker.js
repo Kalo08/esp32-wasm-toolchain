@@ -10,9 +10,10 @@ const post = (m) => postMessage(m);
 let log = '';
 const keep = (s) => { log += s + '\n'; };
 
-function loadFiles(FS, manifest, bin) {
+function loadFiles(FS, manifest, bin, want = () => true) {
   const made = new Set();
   for (const f of manifest) {
+    if (!want(f.p)) continue;
     const dir = f.p.slice(0, f.p.lastIndexOf('/'));
     if (!made.has(dir)) { FS.mkdirTree(dir); made.add(dir); }
     FS.writeFile(f.p, new Uint8Array(bin, f.o, f.n));
@@ -32,27 +33,43 @@ onmessage = async (e) => {
   const stage = (text) => post({ type: 'stage', text });
   const fail = (error) => post({ type: 'error', error, log: tidy(log) });
   try {
-    stage('Downloading the compiler (cached after the first time)…');
     const get = async (name, kind = 'arrayBuffer') => {
       const r = await fetch(base + name, { cache: 'no-cache' }); // revalidate (ETag): never mix files from two toolchain builds
       if (!r.ok) throw new Error(`${name} isn't on this server (${r.status}). The in-browser compiler isn't installed here.`);
       return r[kind]();
     };
-    const [args, hdrMan, sdkMan, hdrBin, sdkBin, boot, parts, app0] = await Promise.all([
-      get('args.json', 'json'), get('headers.json', 'json'), get('sdk.json', 'json'), get('headers.bin'), get('sdk.bin'),
-      get('bootloader.bin'), get('partitions.bin'), get('boot_app0.bin')]);
+    const args = await get('args.json', 'json');
+    // optional libraries (WiFi, HTTP, BLE...): load a feature's pack only when the sketch #includes one of its headers
+    const { detectFeatures, sdkFor, withLibraryIncludes, withLibraryObjects, missingHeader, coverageText } = await import('./cppfeatures.js');
+    const features = args.features || {};
+    const active = detectFeatures(e.data.code, features);
+    const sdk = sdkFor(active, features);
+    const supported = coverageText(features);
+    stage(active.length ? `Downloading the compiler and ${active.map(f => features[f].label || f).join(', ')} (cached after the first time)…`
+      : 'Downloading the compiler (cached after the first time)…');
+    const [hdrMan, sdkMan, hdrBin, sdkBin, boot, parts, app0, ...packFiles] = await Promise.all([
+      get('headers.json', 'json'), get(sdk + '.json', 'json'), get('headers.bin'), get(sdk + '.bin'),
+      get('bootloader.bin'), get('partitions.bin'), get('boot_app0.bin'),
+      ...active.flatMap(f => [get(`pack-${f}.json`, 'json'), get(`pack-${f}.bin`)])]);
     importScripts(base + 'cc1plus.js', base + 'as.js', base + 'ld.js');
 
     // 1. compile
     stage('Compiling the C++ (the slowest step)…');
     let cc = await createCc1plus({ print: keep, printErr: keep, locateFile: (f) => base + f });
     loadFiles(cc.FS, hdrMan, hdrBin);
+    for (let i = 0; i < active.length; i++) loadFiles(cc.FS, packFiles[2 * i], packFiles[2 * i + 1], (p) => !p.startsWith('/lib/')); // headers
     cc.FS.mkdirTree(args.cwd); cc.FS.chdir(args.cwd);
     cc.FS.writeFile('/work/main.cpp', e.data.code);
-    const ccStatus = callMain(cc, args.cc1);
+    // the libraries' include folders go right after the board's variant folder, as the Arduino tools put them
+    const ccStatus = callMain(cc, withLibraryIncludes(args.cc1, active, features));
     let asm = null; try { asm = cc.FS.readFile('/work/out.s'); } catch { /* compile failed */ }
     cc = null;
-    if (ccStatus !== 0 || !asm) return fail('The C++ didn\'t compile.');
+    if (ccStatus !== 0 || !asm) {
+      const noHeader = missingHeader(log);
+      return fail(noHeader
+        ? `This sketch uses ${noHeader}, a library the in-browser compiler doesn't include yet. It covers ${supported}. Other libraries need the desktop app.`
+        : 'The C++ didn\'t compile.');
+    }
 
     // 2. assemble
     stage('Assembling…');
@@ -67,14 +84,16 @@ onmessage = async (e) => {
     stage('Linking with the ESP32 libraries…');
     let ld = await createLd({ print: keep, printErr: keep, locateFile: (f) => base + f });
     loadFiles(ld.FS, sdkMan, sdkBin);
+    for (let i = 0; i < active.length; i++) loadFiles(ld.FS, packFiles[2 * i], packFiles[2 * i + 1], (p) => p.startsWith('/lib/')); // library objects
     ld.FS.mkdirTree('/work'); ld.FS.writeFile('/work/sketch.o', obj);
-    const ldStatus = callMain(ld, args.ld);
+    // the libraries' objects are linked right after the sketch's, in the Arduino tools' order
+    const ldStatus = callMain(ld, withLibraryObjects(args.ld, active, features));
     let elf = null; try { elf = ld.FS.readFile('/work/out.elf'); } catch { /* failed */ }
     ld = null;
     if (ldStatus !== 0 || !elf) {
       const missing = /undefined reference to/.test(log);
       return fail(missing
-        ? 'The linker needs ESP32 libraries that the in-browser compiler doesn\'t include yet (this build covers the Arduino core, Serial, the pins and PWM). A library or feature like WiFi needs the desktop app.'
+        ? `The linker needs ESP32 libraries that the in-browser compiler doesn't include yet (this build covers ${supported}). Other libraries and features need the desktop app.`
         : 'The linker stopped.');
     }
 

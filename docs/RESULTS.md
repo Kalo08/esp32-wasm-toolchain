@@ -9,7 +9,8 @@ Emscripten 7.0.0 from Espressif's own sources at the tags in [`../SOURCE.md`](..
 `xtensa_esp32s3.so`, no `dlopen`.
 
 > [!IMPORTANT]
-> Every stage is compared with Espressif's native toolchain, **but nothing here has been flashed to a physical board.**
+> Every stage is compared with Espressif's native toolchain. A blink sketch built by the browser compiler has also been flashed to a
+> physical SparkFun ESP32-S3 Thing Plus and blinked its LED (reported by the author). **Nothing else has been run on hardware.**
 
 ## At a glance
 
@@ -19,7 +20,7 @@ Emscripten 7.0.0 from Espressif's own sources at the tags in [`../SOURCE.md`](..
 | C++ compiler | Verified: identical code and data; 16 debug-string lines differ |
 | Whole pipeline in a browser Worker | Verified: about 13 s for blink |
 | Download | about 16 MB gzipped |
-| Flash and run on a real board | Not yet tested |
+| Flash and run on a real board | Verified for blink (the on-board LED blinks); other programs not yet tested |
 
 ## Test results (the blink sketch)
 
@@ -71,12 +72,32 @@ For comparison, the whole ESP32-S3 SDK is 243 MB of libraries (67 MB gzipped) pl
 
 Measured from the linker map of a native build (members actually linked, not whole libraries):
 
-| Program | Archives | Members used | Gzipped |
-|---|---|---|---|
-| Blink | 51 | 22.6 MB (of 72 MB in those archives) | 6.9 MB (4.1 MB xz) |
-| WiFiScan (Arduino example) | 66 | 42.1 MB (of 88.9 MB) | 12.9 MB (7.9 MB xz) |
+| Program | Native app size | Archives | Members used | Gzipped |
+|---|---|---|---|---|
+| Blink | 299,952 bytes | 51 | 22.6 MB (of 72 MB in those archives) | 6.9 MB (4.1 MB xz) |
+| WiFiScan (Arduino example) | 842,928 bytes | 66 | 42.1 MB (of 88.9 MB) | 12.9 MB (7.9 MB xz) |
+| BasicHttpsClient (WiFi and TLS) | 1,028,704 bytes | 66 | 42.4 MB | 13.0 MB (7.9 MB xz) |
+| BLE Server | 561,968 bytes | 49 | 23.2 MB (of 71.3 MB) | 7.0 MB (4.2 MB xz) |
+| WireScan, SPI_Multiple_Buses, StartCounter | 299,456 / 279,216 / 282,832 bytes | about 50 each | close to blink | close to blink |
+| HelloServer (web server, mDNS, WiFi) | 918,768 bytes | WiFi-class | included in the union below | included in the union below |
+| Union of WiFi, HTTPS and BLE | | 68 | 47.1 MB | 14.5 MB (8.5 MB xz) |
 
-BLE and HTTPS/TLS were not measured. The WiFiScan sketch is 842,786 bytes as a native build.
+TLS adds only about 0.3 MB on top of WiFi; BLE adds about 0.6 MB on top of blink. The Arduino libraries' own compiled code is separate:
+2.5 MB (WiFi), 1.2 MB (HTTP), 10.6 MB (BLE) with debug info, 0.4, 0.2 and 0.8 MB stripped.
+
+### WiFi, HTTP and BLE in the browser
+
+The three Arduino examples were built in a browser Worker, with the feature packs loaded because of their `#include` lines:
+
+| Example | Time | App image | Against the Arduino IDE's image |
+|---|---|---|---|
+| WiFiScan | 8.1 s | 842,928 bytes | same size; differs in the embedded ELF hash (32 bytes), checksum and digest (33) and 7 timestamp bytes |
+| BasicHttpsClient | 9.1 s | 1,028,704 bytes | same size; the same, with 6 timestamp bytes |
+| BLE Server | 4.7 s | 561,968 bytes | same size; the same, with 6 timestamp bytes |
+
+The timestamp bytes are the build time recorded in the Arduino core objects (each native build compiled its own copy of the core).
+Download: about 16 MB for a basic sketch, about 23 MB for one using WiFi (the larger SDK variant is 13.7 MB gzipped, and the packs are 0.3,
+0.4 and 0.4 MB). Nothing was run on a board.
 
 ## How to run (Node, as the tests did)
 
@@ -92,10 +113,10 @@ minutes.
 
 ## Not done yet
 
-- [ ] Flash a real board and confirm it runs
+- [x] Flash a real board and confirm it runs (blink, on the SparkFun ESP32-S3 Thing Plus)
 - [ ] Other ESP32-S3 boards
-- [ ] WiFi, BLE and other libraries in the browser bundle
-- [ ] Multi-file sketches and Arduino libraries in the Worker
+- [ ] Run WiFi, BLE and sensors (I2C, SPI) on a real board (the WiFi and BLE builds are verified; the radios and sensors are not)
+- [ ] Other Arduino libraries (web server, MQTT, SD...) and multi-file sketches in the Worker
 - [ ] The Arduino core and libraries compiled by this toolchain (the bundle uses the Arduino IDE's own `core.a`)
 - [ ] Matching the debug strings exactly (only matters for a byte-identical ELF)
 - [ ] Publishing: the GPL source offer and the SDK licence review ([`../RELEASING.md`](../RELEASING.md))

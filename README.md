@@ -27,9 +27,10 @@ seemed to exist: I found no published GCC C++ compiler for Xtensa running as Web
 and dead end, is in [`docs/design-journal.docx`](docs/design-journal.docx).
 
 > [!WARNING]
-> **Beta.** Every stage is checked byte-for-byte against Espressif's native toolchain, but **nothing here has been confirmed
-> running on a physical board yet**, and only one board profile exists. Read [What's verified](#whats-verified) before you
-> rely on it, and please [report what you see](#help-wanted).
+> **Beta.** Every stage is checked byte-for-byte against Espressif's native toolchain, and a blink sketch built by the browser
+> compiler has run on a real **SparkFun ESP32-S3 Thing Plus**. **Nothing else has been tested on hardware** (no sensors, WiFi or
+> BLE), and only one board profile exists. Read [What's verified](#whats-verified) before you rely on it, and please
+> [report what you see](#help-wanted).
 
 ## At a glance
 
@@ -37,11 +38,11 @@ and dead end, is in [`docs/design-journal.docx`](docs/design-journal.docx).
 |---|---|
 | **What it does** | C++ sketch → flashable image, entirely in the browser, then Web Serial to the board |
 | **Compile time** | about 13 s for a blink sketch in a Chromium Worker (about 5–7 s of it is the C++ compile) |
-| **First download** | about **16 MB** gzipped (the browser caches it); no server work per build |
+| **First download** | about **17 MB** gzipped, about **24 MB** for a sketch that uses WiFi (the browser caches it); no server work per build |
 | **Needs** | Chrome or Edge (Web Serial), an ESP32-S3 board, and memory for the compiler's 256 MB WebAssembly heap (untested on low-memory devices) |
 | **Board profile** | SparkFun ESP32-S3 Thing Plus, Arduino-ESP32 core 3.3.12 (other boards need their own profile) |
-| **Covers** | Arduino core, `Serial`, GPIO, PWM, ADC, RGB LED, tone, the C++ standard library |
-| **Doesn't cover yet** | WiFi, Bluetooth and other libraries (see [WiFi and Bluetooth](#wifi-and-bluetooth)) |
+| **Covers** | Arduino core, `Serial`, GPIO, PWM, ADC, RGB LED, tone, the C++ standard library, **WiFi, HTTP and HTTPS clients, a web server with mDNS, BLE, Wire (I2C), SPI, Preferences** |
+| **Doesn't cover yet** | other Arduino libraries (MQTT, SD cards, displays...) and sketches of more than one file (see [WiFi and Bluetooth](#wifi-and-bluetooth)) |
 
 ## How it works
 
@@ -79,10 +80,12 @@ if the WebAssembly tools give the same bytes as the native ones, they're right.
 | Compile (`cc1plus.wasm`) | the first 5,600 of 6,297 lines of assembly are identical to the native compiler's; the other 16 lines are debug-info strings (the compiler's flag list and the working-folder path) | Verified |
 | `elf2image` | **byte-for-byte identical** to `esptool elf2image` for the blink ELF | Verified |
 | Whole pipeline in a browser | blink: C++ → flashable image in about 13 s in a Chromium Worker. The image differs from the native one only in the embedded ELF hash (32 bytes), the checksum (1 byte) and the image digest (32 bytes), because the ELF's debug paths differ | Verified |
-| **Flashing a real board and it running** | the last step (`src/flash.js` → Web Serial → the chip booting your program) is **untested in this repository** | Not tested |
+| **Flashing a real board and it running** | a blink sketch compiled by the browser toolchain was flashed to a SparkFun ESP32-S3 Thing Plus and blinked its on-board LED (reported by the author). Only blink was tried: no sensors, WiFi or BLE | Verified |
 | Other browsers, phones, low-memory machines | untested (Safari and Firefox have no Web Serial) | Not tested |
 | Other S3 boards | need their own profile | Not supported |
-| WiFi, Bluetooth, other libraries | fail at the **link** step: the bundled libraries are cut down to what the sample programs use | Not supported |
+| Arduino's own WiFiScan, BasicHttpsClient and BLE Server examples | built in a browser Worker: the images have the same size as the Arduino IDE's, and differ only in the embedded ELF hash (32 bytes), the checksum and digest (33 bytes) and 6 or 7 build-timestamp bytes | Verified |
+| Running WiFi, BLE, sensors (I2C, SPI) or other programs on a board | untested | Not tested |
+| Other libraries (anything not listed above) | fail with a clear message at compile or link time | Not supported |
 
 <p align="center"><img src="docs/figures/fig_pipeline.svg" alt="The four build stages, native and WebAssembly, with test results" width="720"></p>
 
@@ -93,8 +96,10 @@ if the WebAssembly tools give the same bytes as the native ones, they're right.
 | `cc1plus.wasm` (the C++ compiler) | 18.1–21 MB | 5–6.5 MB |
 | `as-new.wasm`, `ld-new.wasm` | 1.1, 1.4 MB | 0.4, 0.4 MB |
 | Headers (the 364 files a translated program reads) | 5.7 MB | 0.9 MB |
-| Thin SDK libraries | 24 MB | about 7 MB gzip, about 4 MB xz |
-| **Download in total** | about 50 MB | **about 16 MB gzipped** |
+| Thin SDK libraries (base, with the BLE, Wire, SPI and Preferences members) | 26 MB | about 7.8 MB gzip |
+| Library packs (code and headers): WiFi, HTTP, BLE, web server, Wire, SPI, Preferences | 1.4, 2.2, 2.0, 0.6, 0.03, 0.03, 0.04 MB | 0.3, 0.4, 0.4, 0.2, under 0.01 MB each |
+| Larger SDK variant, used only by WiFi sketches (replaces the base SDK) | 48 MB | 14.5 MB gzip |
+| **Download in total** | about 50 MB | **about 17 MB gzipped, about 24 MB with WiFi** |
 
 For comparison the whole ESP32-S3 SDK is 243 MB of libraries (67 MB gzipped); a blink needs 22.6 MB of it.
 
@@ -139,22 +144,35 @@ byte for byte.
 
 ## WiFi and Bluetooth
 
-**Not yet.** A program that needs them fails at the link step with undefined references, because the bundled SDK libraries
-are cut down to what the sample programs use. It's a packaging gap, not a limit of the compiler: the tools are the full
-Espressif ones.
+**Yes, for WiFi, HTTP/HTTPS clients and BLE, verified at build level.** The ESP32-S3 has **BLE only**, no Bluetooth Classic.
+The compiler is the full Espressif one, so this is a packaging question: which libraries are shipped, and when they're fetched.
 
-What I measured (a native Arduino build of the WiFiScan example for the same board, reading the linker map):
+- **Feature packs.** A sketch that `#include`s `WiFi.h`, `HTTPClient.h` or a BLE header downloads that feature's pack (the Arduino
+  library's compiled objects with debug info stripped, plus its headers) and, for WiFi, a larger SDK bundle. Other sketches
+  never download them, so a blink stays at about 16 MB.
+- **What I measured** (native Arduino builds of the examples for the same board, reading each linker map, and the packs I made):
 
-| | Archives pulled in | SDK members used | Compressed |
-|---|---|---|---|
-| Blink-class sketches (what ships today) | about 50 | 22.6 MB | about 7 MB gzip |
-| **WiFiScan** | 66 | **42.1 MB** | **12.9 MB gzip**, 7.9 MB xz |
+| Example | Native app size | SDK archives | SDK members used | Gzipped |
+|---|---|---|---|---|
+| Blink-class sketches | 299,952 bytes | about 50 | 22.6 MB | about 7 MB |
+| WiFiScan | 842,928 bytes | 66 | 42.1 MB | 12.9 MB |
+| BasicHttpsClient (WiFi and TLS) | 1,028,704 bytes | 66 | 42.4 MB | 13.0 MB |
+| BLE Server | 561,968 bytes | 49 | 23.2 MB | 7.0 MB |
+| Union of all three | | 68 | 47.1 MB | 14.5 MB |
 
-So adding WiFi would roughly double the SDK part of the download (about +6 MB gzipped), which is affordable. Not yet measured:
-BLE and HTTPS/TLS. The ESP32-S3 has **BLE only**, no Bluetooth Classic. Doing it properly also needs the Arduino library sources
-precompiled into archives, their headers, and multi-file compiles, and a read of the precompiled radio libraries' licences
-before publishing them ([`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)). Ideas that would remove the hand-picking
-entirely (fetching library members on demand) are listed under [Help wanted](#help-wanted).
+- **What's verified.** All three Arduino examples compile, link and make images in the browser (4.7 to 9.1 s). The images are the
+  same size as the Arduino IDE's, and differ only in the embedded ELF hash, the checksum and digest, and 6 or 7 timestamp bytes
+  (the native core copies were compiled at different times). The thin SDK variants also link every sample and example to the
+  expected result (the base samples byte for byte; the native examples as images, for the same timestamp reason).
+- **What isn't.** Nothing has run on a board: joining a WiFi network or advertising over BLE needs real hardware. Only the default
+  partition table is flashed (1,310,720 bytes for the app), which fits all three examples (the largest is 1.03 MB); a larger
+  program would need another partition table. The packs and the SDK bundle hold Espressif's precompiled library code: its licence is stated as Apache-2.0, but the Arduino
+  package that ships it states none, so read the [licence review](docs/LICENCE_REVIEW.md) before you publish them.
+- **Also covered, with the same checks:** Wire (I2C), SPI, Preferences, and a web server with mDNS (Arduino's `WireScan`,
+  `SPI_Multiple_Buses`, `StartCounter` and `HelloServer` examples build to exactly the Arduino IDE's sizes and differ only in the same
+  timestamp, hash and checksum bytes). None of these has run on a board.
+- **Not covered:** other Arduino libraries (MQTT, SD, displays...) and sketches of more than one file. A sketch using one gets
+  a message naming the library.
 
 ## Build the toolchain
 
@@ -267,21 +285,17 @@ reference/   the native blink image (.bin) and flash layout the tests compare ag
 
 ## Help wanted
 
-<<<<<<< Updated upstream
-- **Flash it on a real board and tell me what happens.** Even "it doesn't boot" is useful. Include the board, browser, and the
-  Device log. This is the most valuable thing anyone can do right now.
-=======
 - **Test more on real hardware and tell me what happens.** Blink works on a SparkFun ESP32-S3 Thing Plus. Still untested: WiFi and
   BLE sketches, I2C and SPI sensors, other boards, other browsers. Even "it doesn't boot" is useful: include the board, browser and
-  the Device log. Please use the **Hardware test report** issue template ([`CONTRIBUTING.md`](CONTRIBUTING.md)).
->>>>>>> Stashed changes
+  the Device log.
 - **Other ESP32-S3 boards:** a profile is one native capture plus `build/build_profile.py`.
-- **WiFi and BLE:** extend the profile (see above), or try loading SDK members on demand so nothing has to be hand-picked.
+- **WiFi and BLE on a real board,** and more libraries (web server, MQTT, SD...): each is a native build plus `build/build_packs.py` and `build/build_libpacks.py`.
+- **On-demand loading** of SDK members instead of hand-picked packs (a trace showed raw range loading is too big; a member-level index is the idea worth trying).
 - **Multi-file sketches and Arduino libraries** in the Worker.
 
 ## Licence
 
 Code in this repository is **MIT** ([`LICENSE`](LICENSE)). The WebAssembly builds of GCC and binutils are **GPL**: if you
 redistribute them you must offer their source ([`SOURCE.md`](SOURCE.md) has the exact tags and the checklist). SDK libraries
-and the Arduino core keep their own licences ([`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)). Publishing built binaries:
+and the Arduino core keep their own licences ([`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md); what I found about the radio libraries is in [`docs/LICENCE_REVIEW.md`](docs/LICENCE_REVIEW.md)). Publishing built binaries:
 [`RELEASING.md`](RELEASING.md). Not affiliated with or endorsed by Espressif, Arduino or SparkFun.
