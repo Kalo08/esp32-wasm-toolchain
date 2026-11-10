@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="496" viewBox="0 0 1200 496">
+<rect width="1200" height="496" fill="#FFFFFF"/>
+<text x="48" y="56" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#1F2A44" text-anchor="start">The headers a blink sketch actually reads</text>
+<rect x="48" y="96" width="531" height="64" rx="2" ry="2" fill="#1F2A44" stroke="none"/>
+<text x="313" y="136" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle">162</text>
+<text x="313" y="192" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">Compiler</text>
+<rect x="579" y="96" width="429" height="64" rx="2" ry="2" fill="#2B7A78" stroke="none"/>
+<text x="793" y="136" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle">131</text>
+<text x="793" y="192" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">SDK</text>
+<rect x="1008" y="96" width="144" height="64" rx="2" ry="2" fill="#64748B" stroke="none"/>
+<text x="1080" y="136" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle">44</text>
+<text x="1080" y="192" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="middle">Arduino core</text>
+<text x="48" y="240" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">337 files, 5.2 MB (0.7 MB compressed)</text>
+<line x1="48" y1="272" x2="1152" y2="272" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+<text x="48" y="312" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">My first copy of the headers</text>
+<rect x="48" y="328" width="1104" height="40" rx="2" ry="2" fill="#CBD5E1" stroke="none"/>
+<text x="64" y="354" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#1F2A44" text-anchor="start">793 MB, mostly the compiler's sysroot (the C library for every chip)</text>
+<text x="48" y="424" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2A44" text-anchor="start">What the compiler actually needed</text>
+<rect x="48" y="440" width="8" height="40" rx="2" ry="2" fill="#2B7A78" stroke="none"/>
+<text x="72" y="466" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="start">5.2 MB</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+<rect width="1200" height="400" fill="#FFFFFF"/>
+<text x="48" y="56" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#1F2A44" text-anchor="start">What gets flashed (4 MB board)</text>
+<rect x="48" y="96" width="216" height="128" rx="8" ry="8" fill="#FFFFFF" stroke="#1F2A44" stroke-width="2"/>
+<text x="72" y="144" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#1F2A44" text-anchor="start">0x0</text>
+<text x="72" y="172" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">bootloader</text>
+<rect x="72" y="248" width="168" height="32" rx="16" ry="16" fill="#E8F2F1" stroke="#2B7A78" stroke-width="2"/>
+<text x="156" y="269" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="middle">ready-made</text>
+<rect x="272" y="96" width="216" height="128" rx="8" ry="8" fill="#FFFFFF" stroke="#1F2A44" stroke-width="2"/>
+<text x="296" y="144" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#1F2A44" text-anchor="start">0x8000</text>
+<text x="296" y="172" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">partition table</text>
+<rect x="296" y="248" width="168" height="32" rx="16" ry="16" fill="#E8F2F1" stroke="#2B7A78" stroke-width="2"/>
+<text x="380" y="269" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="middle">ready-made</text>
+<rect x="496" y="96" width="216" height="128" rx="8" ry="8" fill="#FFFFFF" stroke="#1F2A44" stroke-width="2"/>
+<text x="520" y="144" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#1F2A44" text-anchor="start">0xe000</text>
+<text x="520" y="172" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">boot_app0</text>
+<rect x="520" y="248" width="168" height="32" rx="16" ry="16" fill="#E8F2F1" stroke="#2B7A78" stroke-width="2"/>
+<text x="604" y="269" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="middle">ready-made</text>
+<rect x="720" y="96" width="432" height="128" rx="8" ry="8" fill="#E8F2F1" stroke="#2B7A78" stroke-width="2"/>
+<text x="744" y="144" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#1F2A44" text-anchor="start">0x10000</text>
+<text x="744" y="172" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">your program (the app)</text>
+<text x="744" y="200" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">299,952 bytes for blink</text>
+<rect x="744" y="248" width="264" height="32" rx="16" ry="16" fill="#E8F2F1" stroke="#2B7A78" stroke-width="2"/>
+<text x="876" y="269" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#2B7A78" text-anchor="middle">made by elf2image</text>
+<line x1="48" y1="320" x2="1152" y2="320" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+<text x="48" y="352" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">Four images, written at four addresses, in this order. Not to scale.</text>
+<text x="48" y="376" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">The bootloader, partition table and boot_app0 come ready-made from the board package.</text>
+</svg>
