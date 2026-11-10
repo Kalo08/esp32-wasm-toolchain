@@ -20,14 +20,18 @@ needs a few more steps, because they contain GPL code.
       [`SOURCE.md`](SOURCE.md).
 - [ ] [`SOURCE.md`](SOURCE.md) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) are included next to the binaries.
 - [ ] The licence texts are included: GPL-3.0, and the notices for GMP, MPFR, MPC and the Emscripten runtime.
+- [ ] **The feature packs contain compiled Arduino library code** (WiFi, Network, NetworkClientSecure, HTTPClient, BLE: LGPL-2.1).
+      Name the `arduino-esp32` tag they were built from (3.3.12), link its source at https://github.com/espressif/arduino-esp32, and
+      include the LGPL-2.1 text.
 - [ ] **The headers bundle is redistributed material too.** `headers.bin` holds Arduino core headers (LGPL-2.1), ESP-IDF
       headers (Apache-2.0) and the C and C++ library headers (newlib, libstdc++). Include their licence texts as well.
 
 **The SDK bundle**
 
-- [ ] **Decide about it.** Safest: do not publish `sdk.bin` / `sdk.json`. Ship the tools and headers, and let users build the
-      SDK part locally. If you do publish it, read the licence of every precompiled library it contains first (the thin SDK
-      includes members of `libbtdm_app` and others) and keep only what the licences allow.
+- [ ] **Decide about it.** Safest: do not publish `sdk.*` or `sdk-wifi.*`. The licence review ([`docs/LICENCE_REVIEW.md`](docs/LICENCE_REVIEW.md))
+      found Apache-2.0 stated for Espressif's radio blobs, but **no licence on the Arduino SDK package itself**. Before publishing the SDK, settle
+      its open points: ask Espressif to confirm the terms (the one question public documents can't settle), and ship the licence texts and any
+      `NOTICE` files next to the binaries. The other components were checked on 10 Nov 2026 (Apache-2.0, BSD-2-Clause, MIT).
 
 **Quality**
 

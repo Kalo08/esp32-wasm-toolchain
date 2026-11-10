@@ -18,6 +18,7 @@ quoting through PowerShell into `wsl bash -c` mangled arguments, so every step i
 [2 · Assembler and linker](#step-2--assembler-linker-objcopy-as-webassembly) ·
 [3 · C++ compiler](#step-3--the-c-compiler-as-webassembly) ·
 [4 · For the browser](#step-4--for-the-browser) ·
+[5 · WiFi, HTTP, BLE](#step-5--wifi-http-and-ble-packs) ·
 [Sample programs](#the-sample-programs) ·
 [Reference ELF](#the-reference-elf-for-npm-test) ·
 [Traps](#things-that-will-bite-you-all-of-them-did)
@@ -93,6 +94,24 @@ That's what `src/cppworker.js` loads from `base`.
 > [!IMPORTANT]
 > **The sample programs decide what the thin SDK covers.** Add a sample that uses a feature (an RGB LED, tone, PWM, WiFi...) and
 > rebuild, otherwise a program using it fails to link. I found this out when `rgbLedWrite` was missing.
+
+## Step 5 — WiFi, HTTP and BLE packs
+
+For libraries beyond the Arduino core, the native Arduino build of an example is the reference: its objects, its linker map and its ELF.
+Build the examples natively for the same board (WiFiScan, BasicHttpsClient and BLE Server here), then:
+
+| Script | What it does |
+|---|---|
+| `gather.py` | from each native build: the library include folders (`includes.cache`) and the link's input objects in order (the map's `LOAD` lines) |
+| `verify_link.py` | rebuilds each program's link command from blink's with those objects and links against the **full** SDK: the ELF must equal the native one (it did, for all three) |
+| `build_packs.py` | the union of SDK archive members used, then two thin SDK variants (`sdk` = base + BLE, `sdk-wifi` = everything), each re-linked against every program. Base samples must be byte-identical; the native examples are compared as flash images, because their own copy of the core was compiled at another time (`image_diff.mjs` allows only the build-timestamp bytes plus the checksum and digest to differ) |
+| `build_libpacks.py` | for each feature (`wifi`, `http`, `ble`): the headers the sample reads plus every header in the library's source folders, and the library objects linked in the native order, debug info stripped with `objcopy` |
+| `finalize_profile.py`, `41_post_profile.sh`, `post_manifest.py` | add the `features` section to `args.json`, install the packs, compress, and write `manifest.json` |
+| `phase0.sh`, `trace_reads.cjs` | an experiment, not part of the build: which byte ranges of each library the linker really reads (used to judge loading libraries on demand) |
+
+The Worker (`src/cppworker.js`) reads `args.json`'s `features`: a sketch's `#include` lines pick the packs, the pack's include
+folders are added after the board's variant folder, and its objects are linked right after the sketch's. Library objects are passed
+to the linker as objects, not as an archive, exactly as the Arduino tools do, so every object is linked.
 
 ## The sample programs
 
