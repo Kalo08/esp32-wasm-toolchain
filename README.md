@@ -27,9 +27,10 @@ seemed to exist: I found no published GCC C++ compiler for Xtensa running as Web
 and dead end, is in [`docs/design-journal.docx`](docs/design-journal.docx).
 
 > [!WARNING]
-> **Beta.** Every stage is checked byte-for-byte against Espressif's native toolchain, but **nothing here has been confirmed
-> running on a physical board yet**, and only one board profile exists. Read [What's verified](#whats-verified) before you
-> rely on it, and please [report what you see](#help-wanted).
+> **Beta.** Every stage is checked byte-for-byte against Espressif's native toolchain, and a blink sketch built by the browser
+> compiler has run on a real **SparkFun ESP32-S3 Thing Plus**. **Nothing else has been tested on hardware** (no sensors, WiFi or
+> BLE), and only one board profile exists. Read [What's verified](#whats-verified) before you rely on it, and please
+> [report what you see](#help-wanted).
 
 ## At a glance
 
@@ -79,11 +80,11 @@ if the WebAssembly tools give the same bytes as the native ones, they're right.
 | Compile (`cc1plus.wasm`) | the first 5,600 of 6,297 lines of assembly are identical to the native compiler's; the other 16 lines are debug-info strings (the compiler's flag list and the working-folder path) | Verified |
 | `elf2image` | **byte-for-byte identical** to `esptool elf2image` for the blink ELF | Verified |
 | Whole pipeline in a browser | blink: C++ → flashable image in about 13 s in a Chromium Worker. The image differs from the native one only in the embedded ELF hash (32 bytes), the checksum (1 byte) and the image digest (32 bytes), because the ELF's debug paths differ | Verified |
-| **Flashing a real board and it running** | the last step (`src/flash.js` → Web Serial → the chip booting your program) is **untested in this repository** | Not tested |
+| **Flashing a real board and it running** | a blink sketch compiled by the browser toolchain was flashed to a SparkFun ESP32-S3 Thing Plus and blinked its on-board LED (reported by the author). Only blink was tried: no sensors, WiFi or BLE | Verified |
 | Other browsers, phones, low-memory machines | untested (Safari and Firefox have no Web Serial) | Not tested |
 | Other S3 boards | need their own profile | Not supported |
 | Arduino's own WiFiScan, BasicHttpsClient and BLE Server examples | built in a browser Worker: the images have the same size as the Arduino IDE's, and differ only in the embedded ELF hash (32 bytes), the checksum and digest (33 bytes) and 6 or 7 build-timestamp bytes | Verified |
-| Running WiFi or BLE on a board | needs a router and a board; untested | Not tested |
+| Running WiFi, BLE, sensors (I2C, SPI) or other programs on a board | untested | Not tested |
 | Other libraries (anything not listed above) | fail with a clear message at compile or link time | Not supported |
 
 <p align="center"><img src="docs/figures/fig_pipeline.svg" alt="The four build stages, native and WebAssembly, with test results" width="720"></p>
@@ -281,8 +282,9 @@ reference/   the native blink image (.bin) and flash layout the tests compare ag
 
 ## Help wanted
 
-- **Flash it on a real board and tell me what happens.** Even "it doesn't boot" is useful. Include the board, browser, and the
-  Device log. This is the most valuable thing anyone can do right now.
+- **Test more on real hardware and tell me what happens.** Blink works on a SparkFun ESP32-S3 Thing Plus. Still untested: WiFi and
+  BLE sketches, I2C and SPI sensors, other boards, other browsers. Even "it doesn't boot" is useful: include the board, browser and
+  the Device log.
 - **Other ESP32-S3 boards:** a profile is one native capture plus `build/build_profile.py`.
 - **WiFi and BLE on a real board,** and more libraries (web server, MQTT, SD...): each is a native build plus `build/build_packs.py` and `build/build_libpacks.py`.
 - **On-demand loading** of SDK members instead of hand-picked packs (a trace showed raw range loading is too big; a member-level index is the idea worth trying).

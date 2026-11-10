@@ -9,7 +9,8 @@ Emscripten 7.0.0 from Espressif's own sources at the tags in [`../SOURCE.md`](..
 `xtensa_esp32s3.so`, no `dlopen`.
 
 > [!IMPORTANT]
-> Every stage is compared with Espressif's native toolchain, **but nothing here has been flashed to a physical board.**
+> Every stage is compared with Espressif's native toolchain. A blink sketch built by the browser compiler has also been flashed to a
+> physical SparkFun ESP32-S3 Thing Plus and blinked its LED (reported by the author). **Nothing else has been run on hardware.**
 
 ## At a glance
 
@@ -19,7 +20,7 @@ Emscripten 7.0.0 from Espressif's own sources at the tags in [`../SOURCE.md`](..
 | C++ compiler | Verified: identical code and data; 16 debug-string lines differ |
 | Whole pipeline in a browser Worker | Verified: about 13 s for blink |
 | Download | about 16 MB gzipped |
-| Flash and run on a real board | Not yet tested |
+| Flash and run on a real board | Verified for blink (the on-board LED blinks); other programs not yet tested |
 
 ## Test results (the blink sketch)
 
@@ -110,9 +111,9 @@ minutes.
 
 ## Not done yet
 
-- [ ] Flash a real board and confirm it runs
+- [x] Flash a real board and confirm it runs (blink, on the SparkFun ESP32-S3 Thing Plus)
 - [ ] Other ESP32-S3 boards
-- [ ] Run WiFi and BLE on a real board (the builds are verified; the radios are not)
+- [ ] Run WiFi, BLE and sensors (I2C, SPI) on a real board (the WiFi and BLE builds are verified; the radios and sensors are not)
 - [ ] Other Arduino libraries (web server, MQTT, SD...) and multi-file sketches in the Worker
 - [ ] The Arduino core and libraries compiled by this toolchain (the bundle uses the Arduino IDE's own `core.a`)
 - [ ] Matching the debug strings exactly (only matters for a byte-identical ELF)
