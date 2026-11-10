@@ -267,8 +267,14 @@ reference/   the native blink image (.bin) and flash layout the tests compare ag
 
 ## Help wanted
 
+<<<<<<< Updated upstream
 - **Flash it on a real board and tell me what happens.** Even "it doesn't boot" is useful. Include the board, browser, and the
   Device log. This is the most valuable thing anyone can do right now.
+=======
+- **Test more on real hardware and tell me what happens.** Blink works on a SparkFun ESP32-S3 Thing Plus. Still untested: WiFi and
+  BLE sketches, I2C and SPI sensors, other boards, other browsers. Even "it doesn't boot" is useful: include the board, browser and
+  the Device log. Please use the **Hardware test report** issue template ([`CONTRIBUTING.md`](CONTRIBUTING.md)).
+>>>>>>> Stashed changes
 - **Other ESP32-S3 boards:** a profile is one native capture plus `build/build_profile.py`.
 - **WiFi and BLE:** extend the profile (see above), or try loading SDK members on demand so nothing has to be hand-picked.
 - **Multi-file sketches and Arduino libraries** in the Worker.
