@@ -4,7 +4,7 @@
   "description": "Espressif's GCC and binutils for the ESP32-S3, built as WebAssembly, plus a Worker that compiles Arduino C++ to a flashable image inside the browser.",
   "type": "module",
   "scripts": {
-    "test": "node tests/elf2image.js && node tests/ino.js",
+    "test": "node tests/elf2image.js && node tests/cppfeatures.js",
     "demo": "node demo/serve.cjs 8650"
   },
   "dependencies": {
